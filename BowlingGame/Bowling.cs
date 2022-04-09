@@ -4,19 +4,16 @@
     {
         public Bowling()
         {
-           
+
         }
 
-        public int CurrentFrame { get; set; }
+        public int CurrentFrame { get; set; } = 1;
         public int Score { get; set; } = -1;
 
         public void StartGame()
         {
             Console.WriteLine($"Starting Game");
-            CurrentFrame++;
-
-            RollFrame();  
-            
+            RollFrame();
         }
 
         public void RollFrame()
@@ -25,9 +22,18 @@
             Console.WriteLine($"Press Enter to Roll for Frame {CurrentFrame}");
             //Console.ReadLine();
 
-            int roll = RollBall();
-            Console.WriteLine($"Roll: {roll}");
-            
+            int currentRoll = 1;
+
+            int maxRolls = CurrentFrame < 9 ? 2 : 3;
+
+            while (currentRoll <= maxRolls)
+            {
+                int rollValue = RollBall();
+                Console.WriteLine($"Roll {currentRoll}: Pins Hit: {rollValue}");
+                currentRoll++;
+            }
+
+            CurrentFrame++;
         }
 
         public int RollBall()

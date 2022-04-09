@@ -11,14 +11,14 @@ namespace BowlingGame.Tests
         {
             game.StartGame();
            
-            Assert.Equal(1, game.CurrentFrame);
+            Assert.True(game.CurrentFrame > 0);
         }
 
         [Fact]
-        public void CanRollBall()
+        public void CanRollFrame()
         {
-            game.RollBall();
-            Assert.True(game.Score >= 0);
+            game.RollFrame();
+            Assert.True(game.CurrentFrame > 1);
         }
 
 
