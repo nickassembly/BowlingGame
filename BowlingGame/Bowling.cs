@@ -13,6 +13,9 @@
             }
         }
 
+        // TODO: Refactor, create interfaces to handle Pins and Scoring
+        // Fix Tests to calculate per roll scores
+
         public int CurrentFrame { get; set; } = 1;
 
         public int Score
@@ -52,21 +55,47 @@
 
             for (int frame = 1; frame <= 10; frame++)
             {
-                Console.WriteLine($"Frame: {CurrentFrame}");
-                int framePins = RollFramePins();
+                int framePins = 0;
+                int finalFramePins = 0;
 
-                if (frame == 10 && framePins == 10)
+                if (frame == 10)
                 {
-                   // Strike on 10th frame, roll 1, Player rolls 2 more times (frame 10: roll[stk] + roll roll)
-                   // Strike OR Spare on 10th frame, roll 2, player rolls 3rd time. (frame 10: roll, roll[stk or spar] + roll) 
-                }
+                    finalFramePins += CalculateRoll(10);
 
-                Console.WriteLine($"Total pins in Frame {CurrentFrame} was {framePins}");
+                    if (finalFramePins < 10)
+                    {
+                        finalFramePins += CalculateRoll(10 - finalFramePins);
+
+                        if (finalFramePins == 10)
+                            finalFramePins += CalculateBonusRoll(10);
+
+                        Console.WriteLine($"Total pins hit in Frame {frame} was {framePins + finalFramePins}");
+                    }
+                    else if (finalFramePins == 10)
+                    {
+                        finalFramePins += CalculateBonusRoll(10);
+                        finalFramePins += CalculateBonusRoll(10);
+
+                        Console.WriteLine($"Total pins hit in Frame {frame} was {framePins + finalFramePins}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Total pins hit in Frame {frame} was {framePins + finalFramePins}");
+                    }
+
+                }
+                else
+                {
+                    framePins += RollFramePins();
+                    Console.WriteLine($"Total pins hit in Frame {frame} was {framePins + finalFramePins}");
+                }
             }
         }
 
         public int RollFramePins()
         {
+            CurrentFrame++;
+
             int totalPinsInFrame = 10;
 
             int rollScore = CalculateRoll(totalPinsInFrame);
@@ -76,15 +105,11 @@
                 rollScore += CalculateRoll(totalPinsInFrame - rollScore);
 
                 _rolls[_currentRoll] = rollScore;
-                CurrentFrame++;
-
                 return rollScore;
             }
             else
             {
                 _rolls[_currentRoll] = rollScore;
-                CurrentFrame++;
-
                 return rollScore;
             }
         }
@@ -102,9 +127,18 @@
         private int CalculateRoll(int pinsLeft)
         {
             Random rand = new Random();
-            int roll = rand.Next(0, pinsLeft);
+            int roll = rand.Next(0, pinsLeft + 1);
 
             Console.WriteLine($"Roll amount: {roll}");
+            return roll;
+        }
+
+        private int CalculateBonusRoll(int pinsLeft)
+        {
+            Random rand = new Random();
+            int roll = rand.Next(0, pinsLeft + 1);
+
+            Console.WriteLine($"Bonus Roll Pins: {roll}");
             return roll;
         }
 
