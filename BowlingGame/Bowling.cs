@@ -21,25 +21,55 @@
             {
                 int score = 0;
                 int rollIndex = 0;
-                for (int frame = 0; frame < 10; frame++)
+
+                for (int frame = 1; frame <= 10; frame++)
                 {
                     if (IsStrike(rollIndex))
                     {
                         score += 10 + StrikeScoreBonus(rollIndex);
+
+                        if (frame % 3 != 0)
+                        {
+                            Console.Write($"Frame: {frame} Running Score: {score} |");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Frame: {frame} Running Score: {score} |");
+                        }
+
                         rollIndex++;
                     }
                     else if (IsSpare(rollIndex))
                     {
                         score += 10 + SpareScoreBonus(rollIndex);
+
+                        if (frame % 3 != 0)
+                        {
+                            Console.Write($"Frame: {frame} Running Score: {score} |");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Frame: {frame} Running Score: {score} |");
+                        }
+
                         rollIndex += 2;
                     }
                     else
                     {
                         score += NormalScore(rollIndex);
+
+                        if (frame % 3 != 0)
+                        {
+                            Console.Write($"Frame: {frame} Running Score: {score}| ");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Frame: {frame} Running Score: {score}| ");
+                        }
+
                         rollIndex += 2;
                     }
                 }
-
                 return score;
             }
         }
@@ -117,11 +147,6 @@
         public void Roll(int pinsHit)
         {
             _rolls[_currentRoll++] = pinsHit;
-        }
-
-        public void ProcessStrike()
-        {
-            CurrentFrame++;
         }
 
         private int CalculateRoll(int pinsLeft)
