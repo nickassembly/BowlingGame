@@ -13,9 +13,6 @@
             }
         }
 
-        // TODO: Refactor, create interfaces to handle Pins and Scoring
-        // Fix Tests to calculate per roll scores
-
         public int CurrentFrame { get; set; } = 1;
 
         public int Score
@@ -87,9 +84,12 @@
                 else
                 {
                     framePins += RollFramePins();
+
                     Console.WriteLine($"Total pins hit in Frame {frame} was {framePins + finalFramePins}");
                 }
             }
+
+            Console.WriteLine($"Total Score: {Score}");
         }
 
         public int RollFramePins()
@@ -129,7 +129,9 @@
             Random rand = new Random();
             int roll = rand.Next(0, pinsLeft + 1);
 
+            Roll(roll);
             Console.WriteLine($"Roll amount: {roll}");
+
             return roll;
         }
 
@@ -138,6 +140,7 @@
             Random rand = new Random();
             int roll = rand.Next(0, pinsLeft + 1);
 
+            Roll(roll);
             Console.WriteLine($"Bonus Roll Pins: {roll}");
             return roll;
         }
